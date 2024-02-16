@@ -1,5 +1,15 @@
-require 'colorize'
+require_relative "board"
+require "colorize"
 
-String.colors.each do |color|
-  puts "This is #{color}".colorize(color.to_sym)
+class Game
+  def initialize
+    @chess_board = Board.new
+  end
+
+  def game_start
+    @chess_board.display_board
+  end
 end
+
+game = Game.new
+game.game_start
