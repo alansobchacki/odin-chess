@@ -36,22 +36,27 @@ class Board
     {
       'color': color,
       'current_square': false,
+      'targeted_by': nil,
+      'piece': nil,
       'id': nil,
       'contents': '   '
     }
   end
 
-  # After that, we place our chess contentss on our board
+  # After that, we place our chess pieces on our board
   def setup_pieces
     8.times do |i|
       @board[1][i][:contents] = ' ♟ '.light_black
-      @board[1][i][:id] = 'pawn_white'
+      @board[1][i][:piece] = 'white_pawn'
+      @board[1][i][:id] = i
+
       @board[6][i][:contents] = ' ♟ '.black
-      @board[6][i][:id] = 'pawn_black'
+      @board[6][i][:piece] = 'pawn_black'
+      @board[6][i][:id] = i
     end
   end
 
-  # And finally, our board is displayed on the terminal
+  # And finally, our board can be displayed on the terminal
   def update_board
     8.times do |i|
       print '  '
@@ -67,6 +72,8 @@ class Board
 
     if square[:current_square]
       print square[:contents].on_light_cyan
+    elsif !square[:targeted_by].nil?
+      print square[:contents].on_green
     elsif square[:color] == 'yellow'
       print square[:contents].on_yellow
     elsif square[:color] == 'light_yellow'
@@ -101,8 +108,10 @@ class Board
 
   def select_square
     puts "\e[H\e[2J" # Resets our terminal input
-    square = @board[@row][@col][:id]
+    square = @board[@row][@col]
 
-    square&.include?('pawn_white') && @pawn&.can_move?(@row, @col)
+    if square[:piece] == 'white_pawn' || square[:piece] == 'moveable_white_pawn' || square[:targeted_by] == 'white_pawn'
+      @pawn.move?(@row, @col)
+    end
   end
 end

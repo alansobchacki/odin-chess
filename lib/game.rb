@@ -19,7 +19,7 @@ class Game
   def play
     # change this into a loop with an exit clause later on
     # currently set at a specific movement count for testing purposes only
-    16.times do
+    24.times do
       @display.player_one
       @chess_board.update_board
       @display.player_two
