@@ -1,6 +1,8 @@
 require_relative "board"
 require_relative "announcements"
 require_relative "white_pawn"
+require_relative "black_pawn"
+require_relative "white_rook"
 require "colorize"
 
 class Game
@@ -19,7 +21,7 @@ class Game
   def play
     # change this into a loop with an exit clause later on
     # currently set at a specific movement count for testing purposes only
-    24.times do
+    40.times do
       @display.player_one
       @chess_board.update_board
       @display.player_two

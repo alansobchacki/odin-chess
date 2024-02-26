@@ -9,12 +9,17 @@ class Board
     @board = []
     @row = 0
     @col = 0
-    @pawn = WhitePawn.new(self)
+    create_pieces
   end
 
-  # We create an array with 8 nested arrays, each containing 8 empty 'squares'.
-  # This simulates an 8x8 board of chess
-  # and our first square is currently our selected square
+  def create_pieces
+    @white_pawn = WhitePawn.new(self)
+    @black_pawn = BlackPawn.new(self)
+    @white_rook = WhiteRook.new(self)
+  end
+
+  # First, we build a nested array of 8 arrays, with each array holding a hash value
+  # This allows for powerful customization of pieces and easy board coordinates positioning
   def create_board
     8.times do |i|
       nested_row = []
@@ -30,30 +35,68 @@ class Board
     @board[0][0][:current_square] = true
   end
 
-  # These are the squares we add to our board.
-  # By default, they're empty.
   def add_square(color)
     {
       'color': color,
       'current_square': false,
       'targeted_by': nil,
+      'belongs_to': nil,
       'piece': nil,
       'id': nil,
       'contents': '   '
     }
   end
 
-  # After that, we place our chess pieces on our board
+  # After that, we place our chess pieces on the board
   def setup_pieces
     8.times do |i|
-      @board[1][i][:contents] = ' ♟ '.light_black
-      @board[1][i][:piece] = 'white_pawn'
-      @board[1][i][:id] = i
-
-      @board[6][i][:contents] = ' ♟ '.black
-      @board[6][i][:piece] = 'pawn_black'
-      @board[6][i][:id] = i
+      place_pieces(1, i, ' ♟ '.light_black, 'player_one', 'white_pawn', i) # places white pawns
+      place_pieces(6, i, ' ♟ '.black, 'player_two', 'black_pawn', i) # places black pawns
     end
+
+    place_rooks
+    place_knights
+    place_bishops
+    place_queens
+    place_kings
+  end
+
+  def place_pieces(row, col, contents, belongs_to, piece, id)
+    @board[row][col][:contents] = contents
+    @board[row][col][:belongs_to] = belongs_to
+    @board[row][col][:piece] = piece
+    @board[row][col][:id] = id
+  end
+
+  def place_rooks
+    place_pieces(0, 0, ' ♜ '.light_black, 'player_one', 'white_rook', 1)
+    place_pieces(0, 7, ' ♜ '.light_black, 'player_one', 'white_rook', 2)
+    place_pieces(7, 0, ' ♜ '.black, 'player_two', 'black_rook', 1)
+    place_pieces(7, 7, ' ♜ '.black, 'player_two', 'black_rook', 2)
+  end
+
+  def place_knights
+    place_pieces(0, 1, ' ♞ '.light_black, 'player_one', 'white_knight', 1)
+    place_pieces(0, 6, ' ♞ '.light_black, 'player_one', 'white_knight', 2)
+    place_pieces(7, 1, ' ♞ '.black, 'player_two', 'black_knight', 1)
+    place_pieces(7, 6, ' ♞ '.black, 'player_two', 'black_knight', 2)
+  end
+
+  def place_bishops
+    place_pieces(0, 2, ' ♝ '.light_black, 'player_one', 'white_bishop', 1)
+    place_pieces(0, 5, ' ♝ '.light_black, 'player_one', 'white_bishop', 2)
+    place_pieces(7, 2, ' ♝ '.black, 'player_two', 'black_bishop', 1)
+    place_pieces(7, 5, ' ♝ '.black, 'player_two', 'black_bishop', 2)
+  end
+
+  def place_queens
+    place_pieces(0, 3, ' ♛ '.light_black, 'player_one', 'white_queen', 1)
+    place_pieces(7, 3, ' ♛ '.black, 'player_two', 'black_queen', 1)
+  end
+
+  def place_kings
+    place_pieces(0, 4, ' ♛ '.light_black, 'player_one', 'white_king', 1)
+    place_pieces(7, 4, ' ♚ '.black, 'player_two', 'black_king', 1)
   end
 
   # And finally, our board can be displayed on the terminal
@@ -81,7 +124,8 @@ class Board
     end
   end
 
-  # Then, we pick which board square we want to play with
+  # The board is already all set up, so now we can interact with it
+  # We pick which board square we want to play with
   def move_square_selector
     movement = $stdin.getch.upcase
     case movement
@@ -108,10 +152,8 @@ class Board
 
   def select_square
     puts "\e[H\e[2J" # Resets our terminal input
-    square = @board[@row][@col]
 
-    if square[:piece] == 'white_pawn' || square[:piece] == 'moveable_white_pawn' || square[:targeted_by] == 'white_pawn'
-      @pawn.move?(@row, @col)
-    end
+    @black_pawn.move?(@row, @col)
+    @white_pawn.move?(@row, @col)
   end
 end
