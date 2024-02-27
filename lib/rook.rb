@@ -170,7 +170,3 @@ class Rook
     @board.board[row][col][:contents] = '   '
   end
 end
-
-# chess pieces symbols:
-# ♜  ♞  ♝  ♛  ♚  ♟
-#######################

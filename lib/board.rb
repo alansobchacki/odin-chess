@@ -13,10 +13,12 @@ class Board
   end
 
   def create_pieces
-    @white_pawn = WhitePawn.new(self)
-    @black_pawn = BlackPawn.new(self)
+    @white_pawn = Pawn.new(self, 'white_pawn', 'moveable_white_pawn', 'player_one', 'player_two', 'black', 1)
+    @black_pawn = Pawn.new(self, 'black_pawn', 'moveable_black_pawn', 'player_two', 'player_one', 'white', -1)
     @white_rook = Rook.new(self, 'white_rook', 'moveable_white_rook', 'player_one', 'player_two', 'black')
     @black_rook = Rook.new(self, 'black_rook', 'moveable_black_rook', 'player_two', 'player_one', 'white')
+    @white_knight = Knight.new(self, 'white_knight', 'moveable_white_knight', 'player_one', 'player_two', 'black')
+    @black_knight = Knight.new(self, 'black_knight', 'moveable_black_knight', 'player_two', 'player_one', 'white')
   end
 
   # First, we build a nested array of 8 arrays, with each array holding a hash value
@@ -52,7 +54,7 @@ class Board
   def setup_pieces
     place_pawns
     place_rooks
-    # place_knights
+    place_knights
     # place_bishops
     # place_queens
     # place_kings
@@ -161,5 +163,7 @@ class Board
     @white_pawn.move?(@row, @col)
     @white_rook.move?(@row, @col)
     @black_rook.move?(@row, @col)
+    @white_knight.move?(@row, @col)
+    @black_knight.move?(@row, @col)
   end
 end
