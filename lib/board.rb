@@ -15,7 +15,7 @@ class Board
   def create_pieces
     @white_pawn = WhitePawn.new(self)
     @black_pawn = BlackPawn.new(self)
-    @white_rook = WhiteRook.new(self)
+    @white_rook = Rook.new(self)
   end
 
   # First, we build a nested array of 8 arrays, with each array holding a hash value
@@ -49,16 +49,12 @@ class Board
 
   # After that, we place our chess pieces on the board
   def setup_pieces
-    8.times do |i|
-      place_pieces(1, i, ' ♟ '.light_black, 'player_one', 'white_pawn', i) # places white pawns
-      place_pieces(6, i, ' ♟ '.black, 'player_two', 'black_pawn', i) # places black pawns
-    end
-
+    place_pawns
     place_rooks
-    place_knights
-    place_bishops
-    place_queens
-    place_kings
+    # place_knights
+    # place_bishops
+    # place_queens
+    # place_kings
   end
 
   def place_pieces(row, col, contents, belongs_to, piece, id)
@@ -66,6 +62,13 @@ class Board
     @board[row][col][:belongs_to] = belongs_to
     @board[row][col][:piece] = piece
     @board[row][col][:id] = id
+  end
+
+  def place_pawns
+    8.times do |i|
+      place_pieces(1, i, ' ♟ '.light_black, 'player_one', 'white_pawn', i)
+      place_pieces(6, i, ' ♟ '.black, 'player_two', 'black_pawn', i)
+    end
   end
 
   def place_rooks
@@ -155,5 +158,6 @@ class Board
 
     @black_pawn.move?(@row, @col)
     @white_pawn.move?(@row, @col)
+    @white_rook.move?(@row, @col)
   end
 end

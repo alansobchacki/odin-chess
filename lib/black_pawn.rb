@@ -12,7 +12,7 @@ class BlackPawn
     square = @board.board[row][col]
     pawn_id = @board.board[row][col][:id]
 
-    if !square[:targeted_by].nil?
+    if square[:targeted_by] == 'black_pawn'
       capture?(row, col, @attacking_pawn_id)
     elsif square[:piece] == 'black_pawn'
       show_viable_captures(row, col) if row.positive?
@@ -33,6 +33,7 @@ class BlackPawn
   def move_pawn(row, col, pawn_id)
     pick_up_pawn(pawn_id)
     place_pawn(row, col, pawn_id)
+    reset_targeted_pieces
   end
 
   def pick_up_pawn(pawn_id)
@@ -40,11 +41,7 @@ class BlackPawn
       8.times do |j|
         next unless @board.board[i][j][:piece] == 'black_pawn' && @board.board[i][j][:id] == pawn_id
 
-        @board.board[i][j][:piece] = nil
-        @board.board[i][j][:targeted_by] = nil
-        @board.board[i][j][:belongs_to] = nil
-        @board.board[i][j][:id] = nil
-        @board.board[i][j][:contents] = '   '
+        remove_movement_squares(i, j)
       end
     end
   end
@@ -82,19 +79,22 @@ class BlackPawn
     end
   end
 
-  # rewrite this to avoid DRY
   def reset_movements
     8.times do |i|
       8.times do |j|
         next unless @board.board[i][j][:piece] == 'moveable_black_pawn'
 
-        @board.board[i][j][:piece] = nil
-        @board.board[i][j][:targeted_by] = nil
-        @board.board[i][j][:belongs_to] = nil
-        @board.board[i][j][:id] = nil
-        @board.board[i][j][:contents] = '   '
+        remove_movement_squares(i, j)
       end
     end
+  end
+
+  def remove_movement_squares(row, col)
+    @board.board[row][col][:piece] = nil
+    @board.board[row][col][:targeted_by] = nil
+    @board.board[row][col][:belongs_to] = nil
+    @board.board[row][col][:id] = nil
+    @board.board[row][col][:contents] = '   '
   end
 end
 
