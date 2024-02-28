@@ -20,92 +20,36 @@ class Rook
     if square[:targeted_by] == @piece
       capture?(row, col, @attacking_rook_id)
     elsif square[:piece] == @piece
-      show_viable_movement(row, col, rook_id)
+      show_viable_movements(row, col, rook_id)
     elsif square[:piece] == @moving_piece
       move_rook(row, col, rook_id)
     end
   end
 
-  def show_viable_movement(row, col, rook_id)
-    rook_right_movements(row, col, rook_id)
-    rook_left_movements(row, col, rook_id)
-    rook_bottom_movements(row, col, rook_id)
-    rook_top_movements(row, col, rook_id)
+  def show_viable_movements(row, col, rook_id)
+    rook_movement(row, 0, col, 1, rook_id) # right horizontal
+    rook_movement(row, 0, col, -1, rook_id) # left horizontal
+    rook_movement(row, 1, col, 0, rook_id) # lower vertical
+    rook_movement(row, -1, col, 0, rook_id) # upper vertical
   end
 
-  def rook_right_movements(row, col, rook_id)
+  def rook_movement(row, new_row, col, new_col, rook_id)
     8.times do |i|
-      break if (col + i) >= 8
-      next if col == (col + i)
+      return unless (row + (i * new_row)) < 8 && (row + (i * new_row)) >= 0
+      return unless (col + (i * new_col)) < 8 && (col + (i * new_col)) >= 0
+      next if col == (col + (i * new_col)) && row == (row + (i * new_row))
 
-      if @board.board[row][col + i][:piece].is_a?(String) && @board.board[row][col + i][:current_square] == false
-        if @board.board[row][col + i][:belongs_to] == @enemy_player
+      if @board.board[row + (i * new_row)][col + (i * new_col)][:piece].is_a?(String)
+        if @board.board[row + (i * new_row)][col + (i * new_col)][:belongs_to] == @enemy_player
           @attacking_rook_id = rook_id
-          @board.board[row][col + i][:targeted_by] = @piece
+          @board.board[row + (i * new_row)][col + (i * new_col)][:targeted_by] = @piece
         end
         break
       end
 
-      @board.board[row][col + i][:piece] = @moving_piece
-      @board.board[row][col + i][:contents] = ' X '.gray
-      @board.board[row][col + i][:id] = rook_id
-    end
-  end
-
-  def rook_left_movements(row, col, rook_id)
-    8.times do |i|
-      break if (col - i).negative?
-      next if col == (col - i)
-
-      if @board.board[row][col - i][:piece].is_a?(String) && @board.board[row][col - i][:current_square] == false
-        if @board.board[row][col - i][:belongs_to] == @enemy_player
-          @attacking_rook_id = rook_id
-          @board.board[row][col - i][:targeted_by] = @piece
-        end
-        break
-      end
-
-      @board.board[row][col - i][:piece] = @moving_piece
-      @board.board[row][col - i][:contents] = ' X '.gray
-      @board.board[row][col - i][:id] = rook_id
-    end
-  end
-
-  def rook_bottom_movements(row, col, rook_id)
-    8.times do |i|
-      break if (row + i) >= 8
-      next if row == (row + i)
-
-      if @board.board[row + i][col][:piece].is_a?(String) && @board.board[row + i][col][:current_square] == false
-        if @board.board[row + i][col][:belongs_to] == @enemy_player
-          @attacking_rook_id = rook_id
-          @board.board[row + i][col][:targeted_by] = @piece
-        end
-        break
-      end
-
-      @board.board[row + i][col][:piece] = @moving_piece
-      @board.board[row + i][col][:contents] = ' X '.gray
-      @board.board[row + i][col][:id] = rook_id
-    end
-  end
-
-  def rook_top_movements(row, col, rook_id)
-    8.times do |i|
-      break if (row - i).negative?
-      next if row == (row - i)
-
-      if @board.board[row - i][col][:piece].is_a?(String) && @board.board[row - i][col][:current_square] == false
-        if @board.board[row - i][col][:belongs_to] == @enemy_player
-          @attacking_rook_id = rook_id
-          @board.board[row - i][col][:targeted_by] = @piece
-        end
-        break
-      end
-
-      @board.board[row - i][col][:piece] = @moving_piece
-      @board.board[row - i][col][:contents] = ' X '.gray
-      @board.board[row - i][col][:id] = rook_id
+      @board.board[row + (i * new_row)][col + (i * new_col)][:piece] = @moving_piece
+      @board.board[row + (i * new_row)][col + (i * new_col)][:contents] = ' X '.gray
+      @board.board[row + (i * new_row)][col + (i * new_col)][:id] = rook_id
     end
   end
 
