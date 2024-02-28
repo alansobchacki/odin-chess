@@ -52,6 +52,7 @@ class Board
     @white_rook = Rook.new(self, 'white_rook', 'moveable_white_rook', 'player_one', 'player_two', 'black')
     @white_knight = Knight.new(self, 'white_knight', 'moveable_white_knight', 'player_one', 'player_two', 'black')
     @white_king = King.new(self, 'white_king', 'moveable_white_king', 'player_one', 'player_two', 'black')
+    @white_bishop = Bishop.new(self, 'white_bishop', 'moveable_white_bishop', 'player_one', 'player_two', 'black')
   end
 
   def create_black_pieces
@@ -59,6 +60,7 @@ class Board
     @black_rook = Rook.new(self, 'black_rook', 'moveable_black_rook', 'player_two', 'player_one', 'white')
     @black_knight = Knight.new(self, 'black_knight', 'moveable_black_knight', 'player_two', 'player_one', 'white')
     @black_king = King.new(self, 'black_king', 'moveable_black_king', 'player_two', 'player_one', 'white')
+    @black_bishop = Bishop.new(self, 'black_bishop', 'moveable_black_bishop', 'player_two', 'player_one', 'white')
   end
 
   # After that, we place our chess pieces on the board
@@ -66,7 +68,7 @@ class Board
     place_pawns
     place_rooks
     place_knights
-    # place_bishops
+    place_bishops
     # place_queens
     place_kings
   end
@@ -178,5 +180,7 @@ class Board
     @black_knight.move?(@row, @col)
     @white_king.move?(@row, @col)
     @black_king.move?(@row, @col)
+    @white_bishop.move?(@row, @col)
+    @black_bishop.move?(@row, @col)
   end
 end

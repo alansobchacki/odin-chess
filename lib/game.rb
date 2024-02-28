@@ -1,10 +1,11 @@
-require_relative "board"
-require_relative "announcements"
-require_relative "pawn"
-require_relative "rook"
-require_relative "knight"
-require_relative "king"
-require "colorize"
+require_relative 'board'
+require_relative 'announcements'
+require_relative 'pawn'
+require_relative 'rook'
+require_relative 'knight'
+require_relative 'king'
+require_relative 'bishop'
+require 'colorize'
 
 class Game
   def initialize
