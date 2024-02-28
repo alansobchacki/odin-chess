@@ -20,6 +20,7 @@ class Rook
     if square[:targeted_by] == @piece
       capture?(row, col, @attacking_rook_id)
     elsif square[:piece] == @piece
+      reset_movements
       show_viable_movements(row, col, rook_id)
     elsif square[:piece] == @moving_piece
       move_rook(row, col, rook_id)
@@ -76,9 +77,9 @@ class Rook
     @board.board[row][col][:id] = rook_id
 
     if @player == 'player_one' then
-      @board.board[row][col][:contents] = ' ♜ '.light_black
+      @board.board[row][col][:contents] = ' ♜ '.cyan
     else
-      @board.board[row][col][:contents] = ' ♜ '.black
+      @board.board[row][col][:contents] = ' ♜ '.magenta
     end
   end
 
@@ -99,7 +100,7 @@ class Rook
   def reset_movements
     8.times do |i|
       8.times do |j|
-        next unless @board.board[i][j][:piece] == @moving_piece
+        next unless @board.board[i][j][:piece]&.include?('moveable')
 
         remove_movement_squares(i, j)
       end

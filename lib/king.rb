@@ -20,6 +20,7 @@ class King
     if square[:targeted_by] == @piece
       capture?(row, col, @attacking_king_id)
     elsif square[:piece] == @piece
+      reset_movements
       show_viable_movement(row, col, king_id)
     elsif square[:piece] == @moving_piece
       move_king(row, col, king_id)
@@ -73,9 +74,9 @@ class King
     @board.board[row][col][:id] = king_id
 
     if @player == 'player_one' then
-      @board.board[row][col][:contents] = ' ♚ '.light_black
+      @board.board[row][col][:contents] = ' ♚ '.cyan
     else
-      @board.board[row][col][:contents] = ' ♚ '.black
+      @board.board[row][col][:contents] = ' ♚ '.magenta
     end
   end
 
@@ -110,7 +111,7 @@ class King
   def reset_movements
     8.times do |i|
       8.times do |j|
-        next unless @board.board[i][j][:piece] == @moving_piece
+        next unless @board.board[i][j][:piece]&.include?('moveable')
 
         remove_movement_squares(i, j)
       end
@@ -125,7 +126,3 @@ class King
     @board.board[row][col][:contents] = '   '
   end
 end
-
-# chess pieces symbols:
-# ♜  ♞  ♝  ♛  ♚  ♟
-#######################

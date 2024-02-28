@@ -19,9 +19,9 @@ class Board
       nested_row = []
       8.times do |j|
         if i.even?
-          nested_row << (j.even? ? add_square('yellow') : add_square('light_yellow'))
+          nested_row << (j.even? ? add_square('white') : add_square('light_green'))
         else
-          nested_row << (j.odd? ? add_square('yellow') : add_square('light_yellow'))
+          nested_row << (j.odd? ? add_square('white') : add_square('light_green'))
         end
       end
       @board << nested_row
@@ -53,6 +53,7 @@ class Board
     @white_knight = Knight.new(self, 'white_knight', 'moveable_white_knight', 'player_one', 'player_two', 'black')
     @white_king = King.new(self, 'white_king', 'moveable_white_king', 'player_one', 'player_two', 'black')
     @white_bishop = Bishop.new(self, 'white_bishop', 'moveable_white_bishop', 'player_one', 'player_two', 'black')
+    @white_queen = Queen.new(self, 'white_queen', 'moveable_white_queen', 'player_one', 'player_two', 'black')
   end
 
   def create_black_pieces
@@ -61,6 +62,7 @@ class Board
     @black_knight = Knight.new(self, 'black_knight', 'moveable_black_knight', 'player_two', 'player_one', 'white')
     @black_king = King.new(self, 'black_king', 'moveable_black_king', 'player_two', 'player_one', 'white')
     @black_bishop = Bishop.new(self, 'black_bishop', 'moveable_black_bishop', 'player_two', 'player_one', 'white')
+    @black_queen = Queen.new(self, 'black_queen', 'moveable_black_queen', 'player_two', 'player_one', 'white')
   end
 
   # After that, we place our chess pieces on the board
@@ -69,7 +71,7 @@ class Board
     place_rooks
     place_knights
     place_bishops
-    # place_queens
+    place_queens
     place_kings
   end
 
@@ -82,40 +84,40 @@ class Board
 
   def place_pawns
     8.times do |i|
-      place_pieces(1, i, ' ♟ '.light_black, 'player_one', 'white_pawn', i)
-      place_pieces(6, i, ' ♟ '.black, 'player_two', 'black_pawn', i)
+      place_pieces(1, i, ' ♟ '.cyan, 'player_one', 'white_pawn', i)
+      place_pieces(6, i, ' ♟ '.magenta, 'player_two', 'black_pawn', i)
     end
   end
 
   def place_rooks
-    place_pieces(0, 0, ' ♜ '.light_black, 'player_one', 'white_rook', 1)
-    place_pieces(0, 7, ' ♜ '.light_black, 'player_one', 'white_rook', 2)
-    place_pieces(7, 0, ' ♜ '.black, 'player_two', 'black_rook', 1)
-    place_pieces(7, 7, ' ♜ '.black, 'player_two', 'black_rook', 2)
+    place_pieces(0, 0, ' ♜ '.cyan, 'player_one', 'white_rook', 1)
+    place_pieces(0, 7, ' ♜ '.cyan, 'player_one', 'white_rook', 2)
+    place_pieces(7, 0, ' ♜ '.magenta, 'player_two', 'black_rook', 1)
+    place_pieces(7, 7, ' ♜ '.magenta, 'player_two', 'black_rook', 2)
   end
 
   def place_knights
-    place_pieces(0, 1, ' ♞ '.light_black, 'player_one', 'white_knight', 1)
-    place_pieces(0, 6, ' ♞ '.light_black, 'player_one', 'white_knight', 2)
-    place_pieces(7, 1, ' ♞ '.black, 'player_two', 'black_knight', 1)
-    place_pieces(7, 6, ' ♞ '.black, 'player_two', 'black_knight', 2)
+    place_pieces(0, 1, ' ♞ '.cyan, 'player_one', 'white_knight', 1)
+    place_pieces(0, 6, ' ♞ '.cyan, 'player_one', 'white_knight', 2)
+    place_pieces(7, 1, ' ♞ '.magenta, 'player_two', 'black_knight', 1)
+    place_pieces(7, 6, ' ♞ '.magenta, 'player_two', 'black_knight', 2)
   end
 
   def place_bishops
-    place_pieces(0, 2, ' ♝ '.light_black, 'player_one', 'white_bishop', 1)
-    place_pieces(0, 5, ' ♝ '.light_black, 'player_one', 'white_bishop', 2)
-    place_pieces(7, 2, ' ♝ '.black, 'player_two', 'black_bishop', 1)
-    place_pieces(7, 5, ' ♝ '.black, 'player_two', 'black_bishop', 2)
+    place_pieces(0, 2, ' ♝ '.cyan, 'player_one', 'white_bishop', 1)
+    place_pieces(0, 5, ' ♝ '.cyan, 'player_one', 'white_bishop', 2)
+    place_pieces(7, 2, ' ♝ '.magenta, 'player_two', 'black_bishop', 1)
+    place_pieces(7, 5, ' ♝ '.magenta, 'player_two', 'black_bishop', 2)
   end
 
   def place_queens
-    place_pieces(0, 3, ' ♛ '.light_black, 'player_one', 'white_queen', 1)
-    place_pieces(7, 3, ' ♛ '.black, 'player_two', 'black_queen', 1)
+    place_pieces(0, 3, ' ♛ '.cyan, 'player_one', 'white_queen', 1)
+    place_pieces(7, 3, ' ♛ '.magenta, 'player_two', 'black_queen', 1)
   end
 
   def place_kings
-    place_pieces(0, 4, ' ♛ '.light_black, 'player_one', 'white_king', 1)
-    place_pieces(7, 4, ' ♚ '.black, 'player_two', 'black_king', 1)
+    place_pieces(0, 4, ' ♛ '.cyan, 'player_one', 'white_king', 1)
+    place_pieces(7, 4, ' ♚ '.magenta, 'player_two', 'black_king', 1)
   end
 
   # Now that the board is set, we can display it on our terminal
@@ -136,10 +138,10 @@ class Board
       print square[:contents].on_light_cyan
     elsif !square[:targeted_by].nil?
       print square[:contents].on_green
-    elsif square[:color] == 'yellow'
-      print square[:contents].on_yellow
-    elsif square[:color] == 'light_yellow'
-      print square[:contents].on_light_yellow
+    elsif square[:color] == 'white'
+      print square[:contents].on_white
+    elsif square[:color] == 'light_green'
+      print square[:contents].on_light_green
     end
   end
 
@@ -172,15 +174,25 @@ class Board
   def select_square
     puts "\e[H\e[2J" # Resets our terminal input
 
-    @black_pawn.move?(@row, @col)
+    player_one_turn
+    player_two_turn
+  end
+
+  def player_one_turn
     @white_pawn.move?(@row, @col)
     @white_rook.move?(@row, @col)
-    @black_rook.move?(@row, @col)
     @white_knight.move?(@row, @col)
-    @black_knight.move?(@row, @col)
     @white_king.move?(@row, @col)
-    @black_king.move?(@row, @col)
     @white_bishop.move?(@row, @col)
+    @white_queen.move?(@row, @col)
+  end
+
+  def player_two_turn
+    @black_pawn.move?(@row, @col)
+    @black_rook.move?(@row, @col)
+    @black_knight.move?(@row, @col)
+    @black_king.move?(@row, @col)
     @black_bishop.move?(@row, @col)
+    @black_queen.move?(@row, @col)
   end
 end

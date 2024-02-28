@@ -21,6 +21,7 @@ class Pawn
     if square[:targeted_by] == @piece
       capture?(row, col, @attacking_pawn_id)
     elsif square[:piece] == @piece
+      reset_movements
       show_viable_captures(row, @new_row, col)
       show_viable_movement(row, @new_row, col, pawn_id)
     elsif square[:piece] == @moving_piece
@@ -59,9 +60,9 @@ class Pawn
     @board.board[row][col][:id] = pawn_id
 
     if @player == 'player_one' then
-      @board.board[row][col][:contents] = ' ♟ '.light_black
+      @board.board[row][col][:contents] = ' ♟ '.cyan
     else
-      @board.board[row][col][:contents] = ' ♟ '.black
+      @board.board[row][col][:contents] = ' ♟ '.magenta
     end
   end
 
@@ -96,7 +97,7 @@ class Pawn
   def reset_movements
     8.times do |i|
       8.times do |j|
-        next unless @board.board[i][j][:piece] == @moving_piece
+        next unless @board.board[i][j][:piece]&.include?('moveable')
 
         remove_movement_squares(i, j)
       end
@@ -111,7 +112,3 @@ class Pawn
     @board.board[row][col][:contents] = '   '
   end
 end
-
-# chess pieces symbols:
-# ♜  ♞  ♝  ♛  ♚  ♟
-#######################
