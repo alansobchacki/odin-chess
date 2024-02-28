@@ -66,7 +66,7 @@ class Pawn
   end
 
   def show_viable_captures(row, new_row, col)
-    return unless (row + new_row) < 8 && (row - new_row) >= 0
+    return unless (row + new_row) < 8 && (row + new_row) >= 0
 
     @attacking_pawn_id = @board.board[row][col][:id]
 

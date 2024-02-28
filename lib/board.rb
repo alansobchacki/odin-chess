@@ -1,7 +1,7 @@
 require 'io/console'
 require 'colorize'
 
-# Everything board related (building our board, displaying its contents, choosing playable square) goes here.
+# Everything board related (building our board, displaying its contents, performing board setup) goes here.
 class Board
   attr_accessor :board, :row, :col
 
@@ -12,16 +12,7 @@ class Board
     create_pieces
   end
 
-  def create_pieces
-    @white_pawn = Pawn.new(self, 'white_pawn', 'moveable_white_pawn', 'player_one', 'player_two', 'black', 1)
-    @black_pawn = Pawn.new(self, 'black_pawn', 'moveable_black_pawn', 'player_two', 'player_one', 'white', -1)
-    @white_rook = Rook.new(self, 'white_rook', 'moveable_white_rook', 'player_one', 'player_two', 'black')
-    @black_rook = Rook.new(self, 'black_rook', 'moveable_black_rook', 'player_two', 'player_one', 'white')
-    @white_knight = Knight.new(self, 'white_knight', 'moveable_white_knight', 'player_one', 'player_two', 'black')
-    @black_knight = Knight.new(self, 'black_knight', 'moveable_black_knight', 'player_two', 'player_one', 'white')
-  end
-
-  # First, we build a nested array of 8 arrays, with each array holding a hash value
+  # First, we create our board: a nested array of 8 arrays, with each array holding a hash value
   # This allows for powerful customization of pieces and easy board coordinates positioning
   def create_board
     8.times do |i|
@@ -50,6 +41,26 @@ class Board
     }
   end
 
+  # Then, we create the pieces to place in our board
+  def create_pieces
+    create_white_pieces
+    create_black_pieces
+  end
+
+  def create_white_pieces
+    @white_pawn = Pawn.new(self, 'white_pawn', 'moveable_white_pawn', 'player_one', 'player_two', 'black', 1)
+    @white_rook = Rook.new(self, 'white_rook', 'moveable_white_rook', 'player_one', 'player_two', 'black')
+    @white_knight = Knight.new(self, 'white_knight', 'moveable_white_knight', 'player_one', 'player_two', 'black')
+    @white_king = King.new(self, 'white_king', 'moveable_white_king', 'player_one', 'player_two', 'black')
+  end
+
+  def create_black_pieces
+    @black_pawn = Pawn.new(self, 'black_pawn', 'moveable_black_pawn', 'player_two', 'player_one', 'white', -1)
+    @black_rook = Rook.new(self, 'black_rook', 'moveable_black_rook', 'player_two', 'player_one', 'white')
+    @black_knight = Knight.new(self, 'black_knight', 'moveable_black_knight', 'player_two', 'player_one', 'white')
+    @black_king = King.new(self, 'black_king', 'moveable_black_king', 'player_two', 'player_one', 'white')
+  end
+
   # After that, we place our chess pieces on the board
   def setup_pieces
     place_pawns
@@ -57,7 +68,7 @@ class Board
     place_knights
     # place_bishops
     # place_queens
-    # place_kings
+    place_kings
   end
 
   def place_pieces(row, col, contents, belongs_to, piece, id)
@@ -105,14 +116,14 @@ class Board
     place_pieces(7, 4, ' ♚ '.black, 'player_two', 'black_king', 1)
   end
 
-  # And finally, our board can be displayed on the terminal
+  # Now that the board is set, we can display it on our terminal
   def update_board
     8.times do |i|
       print '  '
       8.times do |j|
         print_squares(i, j)
       end
-      puts "\e[0m" # Returns our default background color to black
+      puts "\e[0m" # returns our default background color to black
     end
   end
 
@@ -130,21 +141,21 @@ class Board
     end
   end
 
-  # The board is already all set up, so now we can interact with it
+  # Now we can interact with the board and its pieces
   # We pick which board square we want to play with
   def move_square_selector
     movement = $stdin.getch.upcase
     case movement
-    when 'W' then move(-1, 0)  # Up
-    when 'A' then move(0, -1)  # Left
-    when 'S' then move(1, 0)   # Down
-    when 'D' then move(0, 1)   # Right
-    when "\r" then select_square # Enter
+    when 'W' then move(-1, 0)  # up
+    when 'A' then move(0, -1)  # left
+    when 'S' then move(1, 0)   # down
+    when 'D' then move(0, 1)   # right
+    when "\r" then select_square # enter
     end
   end
 
   def move(row_change, col_change)
-    puts "\e[H\e[2J" # Resets our terminal input
+    puts "\e[H\e[2J" # resets our terminal input
     new_row = @row + row_change
     new_col = @col + col_change
 
@@ -165,5 +176,7 @@ class Board
     @black_rook.move?(@row, @col)
     @white_knight.move?(@row, @col)
     @black_knight.move?(@row, @col)
+    @white_king.move?(@row, @col)
+    @black_king.move?(@row, @col)
   end
 end

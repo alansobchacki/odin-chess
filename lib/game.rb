@@ -3,6 +3,7 @@ require_relative "announcements"
 require_relative "pawn"
 require_relative "rook"
 require_relative "knight"
+require_relative "king"
 require "colorize"
 
 class Game
