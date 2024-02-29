@@ -49,22 +49,13 @@ class Main
   end
 
   def display_board_and_messages
-    puts "  #{@player_one}".cyan
+    puts "  #{@player_one}".cyan << ' is the first player.'
     puts ''
     @chess_board.update_board
     puts ''
-    puts "  #{@player_two}".magenta
+    puts "  #{@player_two}".magenta << ' is the second player.'
     check?
     @check == true ? display_check : display_instructions
-  end
-
-  def captured?
-    pawn_count = 8
-    knight_count = 2
-    queen_count = 1
-    king_count = 1
-    rook_count = 2
-    bishop_count = 2
   end
 
   def check?
