@@ -7,6 +7,7 @@ require_relative 'bishop'
 require_relative 'queen'
 require 'colorize'
 
+# Our 'game engine'. The game starts and ends through this class.
 class Main
   def initialize
     @chess_board = Board.new
@@ -17,6 +18,7 @@ class Main
     @check = false
   end
 
+  # First, we greet our players and ask them their names.
   def greetings
     puts '  Hello and welcome to my amazingly coded game of chess!'
     puts '  Player one, you go first! You control the ' << 'blue '.cyan << 'pieces. Please enter your name:'
@@ -31,6 +33,7 @@ class Main
     @player_two = 'Player Two' if @player_two.empty?
   end
 
+  # Then we begin our game setup. Our board is generated, and pieces are placed in it.
   def start
     greetings
     @chess_board.create_board
@@ -38,6 +41,7 @@ class Main
     play
   end
 
+  # The game starts. It will only end once someone performs a 'checkmate'
   def play
     loop do
       display_board_and_messages
@@ -49,13 +53,29 @@ class Main
   end
 
   def display_board_and_messages
-    puts "  #{@player_one}".cyan << ' is the first player.'
-    puts ''
+    player_one_plays?
     @chess_board.update_board
-    puts ''
-    puts "  #{@player_two}".magenta << ' is the second player.'
+    player_two_plays?
     check?
     @check == true ? display_check : display_instructions
+  end
+
+  def player_one_plays?
+    if @chess_board.player_turn == 1
+      puts "  #{@player_one}".cyan << ', it is your turn!'
+    else
+      puts "  #{@player_one}".cyan
+    end
+    puts ''
+  end
+
+  def player_two_plays?
+    puts ''
+    if @chess_board.player_turn == 2
+      puts "  #{@player_two}".magenta << ', it is your turn!'
+    else
+      puts "  #{@player_two}".magenta
+    end
   end
 
   def check?
@@ -114,5 +134,3 @@ end
 
 game = Main.new
 game.start
-
-# Show an array of captured pieces besides each player's name
