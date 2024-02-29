@@ -61,6 +61,7 @@ class Pawn
     pick_up_pawn(pawn_id)
     place_pawn(row, col, pawn_id)
     reset_targeted_pieces
+    pass_turn
   end
 
   def pick_up_pawn(pawn_id)
@@ -129,5 +130,10 @@ class Pawn
     @board.board[row][col][:belongs_to] = nil
     @board.board[row][col][:id] = nil
     @board.board[row][col][:contents] = '   '
+  end
+
+  def pass_turn
+    @board.player_turn += 1 if @player == 'player_one'
+    @board.player_turn -= 1 if @player == 'player_two'
   end
 end

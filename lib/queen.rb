@@ -63,6 +63,7 @@ class Queen
     place_queen(row, col, queen_id)
     reset_movements
     reset_targeted_pieces
+    pass_turn
   end
 
   def pick_up_queen(queen_id)
@@ -117,5 +118,10 @@ class Queen
     @board.board[row][col][:belongs_to] = nil
     @board.board[row][col][:id] = nil
     @board.board[row][col][:contents] = '   '
+  end
+
+  def pass_turn
+    @board.player_turn += 1 if @player == 'player_one'
+    @board.player_turn -= 1 if @player == 'player_two'
   end
 end

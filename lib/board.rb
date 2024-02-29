@@ -3,12 +3,13 @@ require 'colorize'
 
 # Everything board related (building our board, displaying its contents, performing board setup) goes here.
 class Board
-  attr_accessor :board, :row, :col
+  attr_accessor :board, :row, :col, :player_turn
 
   def initialize
     @board = []
     @row = 0
     @col = 0
+    @player_turn = 1
     create_pieces
   end
 
@@ -173,11 +174,11 @@ class Board
 
   def select_square
     puts "\e[H\e[2J" # Resets our terminal input
-    player_one_turn
-    player_two_turn
+    player_one_plays? if @player_turn == 1
+    player_two_plays? if @player_turn == 2
   end
 
-  def player_one_turn
+  def player_one_plays?
     @white_pawn.move?(@row, @col)
     @white_rook.move?(@row, @col)
     @white_knight.move?(@row, @col)
@@ -186,7 +187,7 @@ class Board
     @white_queen.move?(@row, @col)
   end
 
-  def player_two_turn
+  def player_two_plays?
     @black_pawn.move?(@row, @col)
     @black_rook.move?(@row, @col)
     @black_knight.move?(@row, @col)

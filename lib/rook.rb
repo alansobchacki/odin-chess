@@ -59,6 +59,7 @@ class Rook
     place_rook(row, col, rook_id)
     reset_movements
     reset_targeted_pieces
+    pass_turn
   end
 
   def pick_up_rook(rook_id)
@@ -113,5 +114,10 @@ class Rook
     @board.board[row][col][:belongs_to] = nil
     @board.board[row][col][:id] = nil
     @board.board[row][col][:contents] = '   '
+  end
+
+  def pass_turn
+    @board.player_turn += 1 if @player == 'player_one'
+    @board.player_turn -= 1 if @player == 'player_two'
   end
 end
