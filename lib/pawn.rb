@@ -25,6 +25,7 @@ class Pawn
       show_viable_captures(row, @new_row, col)
       show_viable_movement(row, @new_row, col, pawn_id)
     elsif square[:piece] == @moving_piece
+      reset_movements
       move_pawn(row, col, pawn_id)
     end
   end
@@ -33,9 +34,25 @@ class Pawn
     return unless (row + new_row) < 8 && (row + new_row) >= 0
     return unless @board.board[row + new_row][col][:id].nil?
 
+    pawn_move?(row, new_row, col, pawn_id)
+
+    if @board.board[row][col][:piece] == 'white_pawn' && row == 1
+      pawn_double_move?(row, new_row, col, pawn_id)
+    elsif @board.board[row][col][:piece] == 'black_pawn' && row == 6
+      pawn_double_move?(row, new_row, col, pawn_id)
+    end
+  end
+
+  def pawn_move?(row, new_row, col, pawn_id)
     @board.board[row + new_row][col][:piece] = @moving_piece
     @board.board[row + new_row][col][:id] = pawn_id
     @board.board[row + new_row][col][:contents] = ' X '.gray
+  end
+
+  def pawn_double_move?(row, new_row, col, pawn_id)
+    @board.board[row + new_row + new_row][col][:piece] = @moving_piece
+    @board.board[row + new_row + new_row][col][:id] = pawn_id
+    @board.board[row + new_row + new_row][col][:contents] = ' X '.gray
   end
 
   def move_pawn(row, col, pawn_id)

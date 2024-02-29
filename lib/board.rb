@@ -19,9 +19,9 @@ class Board
       nested_row = []
       8.times do |j|
         if i.even?
-          nested_row << (j.even? ? add_square('white') : add_square('light_green'))
+          nested_row << (j.even? ? add_square('white') : add_square('light_yellow'))
         else
-          nested_row << (j.odd? ? add_square('white') : add_square('light_green'))
+          nested_row << (j.odd? ? add_square('white') : add_square('light_yellow'))
         end
       end
       @board << nested_row
@@ -116,7 +116,7 @@ class Board
   end
 
   def place_kings
-    place_pieces(0, 4, ' ♛ '.cyan, 'player_one', 'white_king', 1)
+    place_pieces(0, 4, ' ♚ '.cyan, 'player_one', 'white_king', 1)
     place_pieces(7, 4, ' ♚ '.magenta, 'player_two', 'black_king', 1)
   end
 
@@ -140,8 +140,8 @@ class Board
       print square[:contents].on_green
     elsif square[:color] == 'white'
       print square[:contents].on_white
-    elsif square[:color] == 'light_green'
-      print square[:contents].on_light_green
+    elsif square[:color] == 'light_yellow'
+      print square[:contents].on_light_yellow
     end
   end
 
@@ -173,7 +173,6 @@ class Board
 
   def select_square
     puts "\e[H\e[2J" # Resets our terminal input
-
     player_one_turn
     player_two_turn
   end
