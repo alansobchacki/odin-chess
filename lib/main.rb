@@ -20,12 +20,19 @@ class Main
   def greetings
     puts '  Hello and welcome to my amazingly coded game of chess!'
     puts '  Player one, you go first! You control the ' << 'blue '.cyan << 'pieces. Please enter your name:'
-    @player_one = gets.chomp.to_s[0, 20]
+    @player_one = gets.chomp.to_s[0, 16]
     puts '  Player two, how about you? You control the ' << 'purple '.magenta << 'pieces. Please enter your name:'
-    @player_two = gets.chomp.to_s[0, 20]
+    @player_two = gets.chomp.to_s[0, 16]
+    set_default_names?
+  end
+
+  def set_default_names?
+    @player_one = 'Player One' if @player_one.empty?
+    @player_two = 'Player Two' if @player_two.empty?
   end
 
   def start
+    greetings
     @chess_board.create_board
     @chess_board.setup_pieces
     play
@@ -51,10 +58,13 @@ class Main
     @check == true ? display_check : display_instructions
   end
 
-  def display_instructions
-    puts ''
-    puts "  Use WASD keys to select your piece, then press 'Enter' to confirm your choice."
-    puts "  'W' Moves up - 'A' Moves left - 'S' Moves down - 'D' - Moves right"
+  def captured?
+    pawn_count = 8
+    knight_count = 2
+    queen_count = 1
+    king_count = 1
+    rook_count = 2
+    bishop_count = 2
   end
 
   def check?
@@ -67,6 +77,13 @@ class Main
         end
       end
     end
+  end
+
+  def display_instructions
+    puts ''
+    puts "  Use WASD keys to select your piece, then press 'Enter' to confirm your choice."
+    puts "  'W' Moves up - 'A' Moves left - 'S' Moves down - 'D' - Moves right"
+    puts "  'X' Indicates a valid movement for your piece. Capture pieces when they turn green!"
   end
 
   def display_check
@@ -105,9 +122,6 @@ class Main
 end
 
 game = Main.new
-game.greetings
 game.start
 
-
-# Allow pawns to move 2 squares if its their first move
 # Show an array of captured pieces besides each player's name

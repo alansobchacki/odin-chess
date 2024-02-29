@@ -50,6 +50,8 @@ class Pawn
   end
 
   def pawn_double_move?(row, new_row, col, pawn_id)
+    return unless @board.board[row + new_row + new_row][col][:id].nil?
+
     @board.board[row + new_row + new_row][col][:piece] = @moving_piece
     @board.board[row + new_row + new_row][col][:id] = pawn_id
     @board.board[row + new_row + new_row][col][:contents] = ' X '.gray
